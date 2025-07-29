@@ -1,38 +1,54 @@
-maven-java-template
-===================
+# 🚀 Create Your First Java Program
 
-This is the base for all standard standalone java based application.
+Java has evolved to become more beginner-friendly. This guide walks you through creating a simple program that prints “Hello World,” using both the classic syntax and the new streamlined approach introduced in Java 21.
 
-How to use ?
-=====================
+---
 
-1. Clone this repository.
+## ✨ Classic Java Approach
 
-2. Change the artifactId in your pom.xml with the project name.
+Traditionally, Java requires a class with a `main` method as the entry point:
 
-3. Run mvn test, you should get "BUILD SUCCESS".
+```java
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello World");
+    }
+}
+```
 
-4. Import the project to your ide.
+This works across all Java versions and forms the foundation of most Java programs.
 
-5. Add all your packages and source code to
-    * src/main/java
+---
 
-6. Add the source code for test into
-    * src/test/java
+## 🆕 Java 21: Unnamed Class with Instance Main Method
 
-Goals
-=========
-1. Clean:
-    * mvn clean
+In newer versions like **Java 21**, you can use **Unnamed Classes** and an **Instance Main Method**, which allows for a much cleaner syntax:
 
-2. Build:
-    * mvn compile
-    * mvn test
-    * mvn package
-    * mvn install
-    * mvn exec:java -Dexec.mainClass="com.example.Class"
+```java
+void main() {
+    System.out.println("Hello World");
+}
+```
 
-### Plugins
-* Junit5
-* AssertJ
-* Mockito
+### 💡 Why is this cool?
+
+- ✅ No need for a `public class` declaration  
+- ✅ No `static` keyword required  
+- ✅ Great for quick scripts and learning  
+
+To compile and run this, use:
+
+```bash
+javac --source 21 --enable-preview HelloWorld.java
+java --source 21 --enable-preview HelloWorld
+```
+
+---
+
+## 📚 Learn More
+
+This feature is part of Java’s ongoing effort to streamline syntax. You can explore deeper in [Baeldung’s guide to Unnamed Classes and Instance Main Methods](https://www.baeldung.com/java-21-unnamed-class-instance-main).
+
+---
+
+Would you like help writing a version that includes user input or command-line arguments?
