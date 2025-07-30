@@ -103,15 +103,15 @@ jobs:
           ${TEST_CODE}"
                     
           JSON_CONTENT="{
-            "model": "${OPENROUTER_MODEL}",
-            "messages": [
+            \"model\": \"${OPENROUTER_MODEL}\",
+            \"messages\": [
               {
-                "role": "system",
-                "content": "You are an expert Java programming instructor providing feedback on a student''s assignment. Your feedback should be constructive, helpful, and encouraging. Analyze the code for correctness, style, and adherence to the instructions. If there are tests, evaluate them as well. Structure your feedback in Markdown format. Don't ask if the student want help or suggest too much code examples."
+                \"role\": \"system\",
+                \"content\": \"You are an expert Java programming instructor providing feedback on a student''s assignment. Your feedback should be constructive, helpful, and encouraging. Analyze the code for correctness, style, and adherence to the instructions. If there are tests, evaluate them as well. Structure your feedback in Markdown format. Don't ask if the student want help or suggest too much code examples.\"
               },
               {
-                "role": "user",
-                "content": "${PAYLOAD}"
+                \"role\": \"user\",
+                \"content\": \"${PAYLOAD}\"
               }
             ]
           }"
