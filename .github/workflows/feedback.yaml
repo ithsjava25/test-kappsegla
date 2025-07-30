@@ -23,6 +23,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
+    env:
+      OPENROUTER_MODEL: ${{ secrets.OPENROUTER_MODEL }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -106,7 +108,7 @@ jobs:
           # 2. Construct the final JSON payload using jq
           # Now the jq command is much cleaner and just assembles the parts.
           PAYLOAD=$(jq -n \
-            --arg model "${{ secrets.OPENROUTER_MODEL }}" \
+            --arg model "$OPENROUTER_MODEL" \
             --arg user_content "$USER_CONTENT" \
             '{
               "model": $model,
