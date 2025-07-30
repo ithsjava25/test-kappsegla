@@ -16,7 +16,7 @@ on:
   pull_request:
     types: [opened, synchronize]
     branches:
-      - main # This should match the default branch for student repositories
+      - feedback
 
 jobs:
   provide_feedback:
