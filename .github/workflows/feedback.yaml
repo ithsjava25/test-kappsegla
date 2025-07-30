@@ -97,51 +97,20 @@ jobs:
           Please provide feedback on the following Java assignment.
 
           **Assignment Instructions:**
-       #   $INSTRUCTIONS
-
+          #$INSTRUCTIONS
           **Student's Source Code:**
           \`\`\`java
-      #    $SOURCE_CODE
+          #$SOURCE_CODE
           \`\`\`
 
           **Student's Test Code:**
           \`\`\`java
-        #  $TEST_CODE
+          #$TEST_CODE
           \`\`\`
           EOF
 
           #echo "$USER_CONTENT"
-#
-#          cat <<EOF > prompt.json
-#          {
-#            "model": "$model",
-#            "messages": [
-#              {
-#                "role": "system",
-#                "content": "You are an expert Java programming instructor providing feedback on a student's assignment. Your feedback should be constructive, helpful, and encouraging. Analyze the code for correctness, style, and adherence to the instructions. If there are tests, evaluate them as well. Structure your feedback in Markdown format. Don't ask if the student want help or suggest too much code examples."
-#              },
-#              {
-#                "role": "user",
-#                "content": "$user_content"
-#              }
-#            ]
-#          }
-#          EOF
-#
-#          cat prompt.json
-##
-#          # Send request to OpenRouter API
-#          API_RESPONSE=$(echo "$PAYLOAD" | curl -S https://openrouter.ai/api/v1/chat/completions \
-#            -H "Authorization: Bearer ${{ secrets.OPENROUTER_API_KEY }}" \
-#            -H "Content-Type: application/json" \
-#            -d @- 2> >(tee /dev/stderr))
-#
-#          # Extract and output feedback
-#          FEEDBACK_CONTENT=$(echo "$API_RESPONSE" | jq -r '.choices[0].message.content')
-#            echo "feedback<<EOF" >> $GITHUB_OUTPUT
-#            echo "$FEEDBACK_CONTENT" >> $GITHUB_OUTPUT
-#            echo "EOF" >> $GITHUB_OUTPUT
-
+          
       - name: Post Feedback as PR Comment ✍️
         uses: actions/github-script@v7
         env:
