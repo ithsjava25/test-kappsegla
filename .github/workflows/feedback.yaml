@@ -76,14 +76,14 @@ jobs:
           ${{ steps.instructions.outputs.instructions }}
           EOF
           )
-#          SOURCE_CODE=$(jq -Rs . <<'EOF'
-#          ${{ steps.source_code.outputs.source_code }}
-#          EOF
-#          )
-#          TEST_CODE=$(jq -Rs . <<'EOF'
-#          ${{ steps.test_code.outputs.test_code }}
-#          EOF
-#          )
+          SOURCE_CODE=$(jq -Rs . <<'EOF'
+          ${{ steps.source_code.outputs.source_code }}
+          EOF
+          )
+          TEST_CODE=$(jq -Rs . <<'EOF'
+          ${{ steps.test_code.outputs.test_code }}
+          EOF
+          )
 #
 #          #1. Prepare the user prompt content in a shell variable
 #          read -r -d '' USER_CONTENT <<'EOF'
