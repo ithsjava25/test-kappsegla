@@ -14,7 +14,7 @@ name: AI-Powered Feedback
 
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: [ opened, synchronize ]
     branches:
       - feedback
 
@@ -37,21 +37,32 @@ jobs:
       - name: Read source code
         id: source_code
         run: |
-          # Finds all .java files in the src/main/java directory and its subdirectories,
-          # then concatenates their content into a single string.
-          echo "source_code=$(find src/main/java -name "*.java" -print0 | xargs -0 cat | sed 's/\"/\\\"/g' | sed 's/$/\\n/' | tr -d '\n' | sed 's/\\n/\\\\n/g')" >> $GITHUB_OUTPUT
+          {
+            echo 'source_code<<EOF'
+            find src/main/java -type f -name "*.java" | while read -r file; do
+              echo "// File: $file"
+              cat "$file"
+              echo
+            done
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
 
       - name: Read test code
         id: test_code
         run: |
-          # Finds all .java files in the src/test/java directory and its subdirectories,
-          # then concatenates their content into a single string.
-          # It includes an error check in case the directory doesn't exist.
-          if [ -d "src/test/java" ]; then
-            echo "test_code=$(find src/test/java -name "*.java" -print0 | xargs -0 cat | sed 's/\"/\\\"/g' | sed 's/$/\\n/' | tr -d '\n' | sed 's/\\n/\\\\n/g')" >> $GITHUB_OUTPUT
-          else
-            echo "test_code=No test code found." >> $GITHUB_OUTPUT
-          fi
+          {
+            echo 'test_code<<EOF'
+            if [ -d "src/test/java" ]; then
+              find src/test/java -type f -name "*.java" | while read -r file; do
+                echo "// File: $file"
+                cat "$file"
+                echo
+              done
+            else
+              echo "No test code found."
+            fi
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
 
       - name: Generate AI Feedback
         id: ai_feedback
@@ -63,9 +74,9 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.OPENROUTER_API_KEY }}" \
             -H "Content-Type: application/json" \
             -d '{
-              "model": "qwen/qwen3-235b-a22b-2507:free",
+              "model": "${{ secrets.OPENROUTER_MODEL }}"",
               "messages": [
-                {"role": "system", "content": "You are an expert Java programming instructor providing feedback on a student''s assignment. Your feedback should be constructive, helpful, and encouraging. Analyze the code for correctness, style, and adherence to the instructions. If there are tests, evaluate them as well. Structure your feedback in Markdown format."},
+                {"role": "system", "content": "You are an expert Java programming instructor providing feedback on a student''s assignment. Your feedback should be constructive, helpful, and encouraging. Analyze the code for correctness, style, and adherence to the instructions. If there are tests, evaluate them as well. Structure your feedback in Markdown format. Don't ask if the student want help or suggest too much code examples."},
                 {"role": "user", "content": "Please provide feedback on the following Java assignment.\n\n**Assignment Instructions:**\n${{ steps.instructions.outputs.instructions }}\n\n**Student''s Source Code:**\n```java\n${{ steps.source_code.outputs.source_code }}\n```\n\n**Student''s Test Code:**\n```java\n${{ steps.test_code.outputs.test_code }}\n```"}
               ]
             }')
@@ -77,21 +88,63 @@ jobs:
           echo "$FEEDBACK_CONTENT" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Post Feedback as PR Comment
+#      - name: Post Feedback as PR Comment
+#        uses: actions/github-script@v7
+#        env:
+#          # Pass the feedback as an environment variable to avoid syntax errors
+#          # with special characters like backticks.
+#          FEEDBACK_BODY: ${{ steps.ai_feedback.outputs.feedback }}
+#        with:
+#          github-token: ${{secrets.GITHUB_TOKEN}}
+#          script: |
+#            // Read the feedback from the environment variable.
+#            const feedback = process.env.FEEDBACK_BODY;
+#
+#            await github.rest.issues.createComment({
+#              owner: context.repo.owner,
+#              repo: context.repo.repo,
+#              issue_number: context.issue.number,
+#              body: feedback
+#            });
+      - name: Post Feedback as PR Comment ✍️
         uses: actions/github-script@v7
         env:
-          # Pass the feedback as an environment variable to avoid syntax errors
-          # with special characters like backticks.
           FEEDBACK_BODY: ${{ steps.ai_feedback.outputs.feedback }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            // Read the feedback from the environment variable.
-            const feedback = process.env.FEEDBACK_BODY;
+            // A unique signature to identify our comment
+            const signature = "`AI_FEEDBACK_COMMENT`";
+            const body = `${process.env.FEEDBACK_BODY}\n\n${signature}`;
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
             
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: feedback
+            // Get all comments on the pull request
+            const { data: comments } = await github.rest.issues.listComments({
+            owner,
+            repo,
+            issue_number,
             });
+            
+            // Find a previous comment by the action using the signature
+            const previousComment = comments.find(comment => comment.body.includes(signature));
+            
+            if (previousComment) {
+            // If a comment exists, update it
+            await github.rest.issues.updateComment({
+            owner,
+            repo,
+            comment_id: previousComment.id,
+            body,
+            });
+            console.log('Updated existing feedback comment.');
+            } else {
+            // If no comment exists, create a new one
+            await github.rest.issues.createComment({
+            owner,
+            repo,
+            issue_number,
+            body,
+            });
+            console.log('Posted new feedback comment.');
+            }
