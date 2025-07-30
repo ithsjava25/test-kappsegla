@@ -97,14 +97,10 @@ jobs:
           ${INSTRUCTIONS}
           
           **Student's Source Code:**
-          \`\`\`java
           ${SOURCE_CODE}
-          \`\`\`
 
           **Student's Test Code:**
-          \`\`\`java
-          ${TEST_CODE}
-          \`\`\`"
+          ${TEST_CODE}"
                     
           JSON_CONTENT="{
             "model": "${OPENROUTER_MODEL}",
