@@ -108,9 +108,21 @@ jobs:
           $TEST_CODE
           \`\`\`"
           
-          echo "$PAYLOAD"
+          JSON_CONTENT="{
+            "model": "$OPENROUTER_MODEL",
+            "messages": [
+              {
+                "role": "system",
+                "content": "You are an expert Java programming instructor providing feedback on a student''s assignment. Your feedback should be constructive, helpful, and encouraging. Analyze the code for correctness, style, and adherence to the instructions. If there are tests, evaluate them as well. Structure your feedback in Markdown format. Don't ask if the student want help or suggest too much code examples."
+              },
+              {
+                "role": "user",
+                "content": "$PAYLOAD"
+              }
+            ]
+          }"
           
-          API_RESPONSE=$(echo "$PAYLOAD" | curl https://openrouter.ai/api/v1/chat/completions \
+          API_RESPONSE=$(echo "$JSON_CONTENT" | curl https://openrouter.ai/api/v1/chat/completions \
           -H "Authorization: Bearer ${{ secrets.OPENROUTER_API_KEY }}" \
           -H "Content-Type: application/json" \
           -d @-)
