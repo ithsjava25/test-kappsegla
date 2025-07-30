@@ -114,6 +114,8 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.OPENROUTER_API_KEY }}" \
           -H "Content-Type: application/json" \
           -d @-)
+          
+          echo "$API_RESPONSE"
 
           FEEDBACK_CONTENT=$(echo "$API_RESPONSE" | jq -r '.choices[0].message.content')
           echo "feedback<<EOF" >> $GITHUB_OUTPUT
