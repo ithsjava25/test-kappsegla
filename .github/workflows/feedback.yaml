@@ -118,17 +118,17 @@ jobs:
           
           echo "$JSON_CONTENT"
           
-#          API_RESPONSE=$(echo "$JSON_CONTENT" | curl https://openrouter.ai/api/v1/chat/completions \
-#          -H "Authorization: Bearer ${{ secrets.OPENROUTER_API_KEY }}" \
-#          -H "Content-Type: application/json" \
-#          -d @-)
-#
-#          echo "$API_RESPONSE"
-#
-#          FEEDBACK_CONTENT=$(echo "$API_RESPONSE" | jq -r '.choices[0].message.content')
-#          echo "feedback<<EOF" >> $GITHUB_OUTPUT
-#          echo "$FEEDBACK_CONTENT" >> $GITHUB_OUTPUT
-#          echo "EOF" >> $GITHUB_OUTPUT
+          API_RESPONSE=$(echo "$JSON_CONTENT" | curl https://openrouter.ai/api/v1/chat/completions \
+          -H "Authorization: Bearer ${{ secrets.OPENROUTER_API_KEY }}" \
+          -H "Content-Type: application/json" \
+          -d @-)
+
+          echo "$API_RESPONSE"
+
+          FEEDBACK_CONTENT=$(echo "$API_RESPONSE" | jq -r '.choices[0].message.content')
+          echo "feedback<<EOF" >> $GITHUB_OUTPUT
+          echo "$FEEDBACK_CONTENT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Post Feedback as PR Comment ✍️
         uses: actions/github-script@v7
