@@ -70,16 +70,24 @@ jobs:
           # This step sends the collected data to the OpenRouter API.
           # You need to replace 'YOUR_MODEL' with the model you wish to use.
           # The prompt is structured to give the AI clear instructions on its role and task.
+          
+          read -r -d '' PAYLOAD <<EOF
+          {
+            "model": "${{ secrets.OPENROUTER_MODEL }}",
+            "messages": [
+               {"role": "system", "content": "You are an expert Java programming instructor providing feedback on a student''s assignment. Your feedback should be constructive, helpful, and encouraging. Analyze the code for correctness, style, and adherence to the instructions. If there are tests, evaluate them as well. Structure your feedback in Markdown format. Don't ask if the student want help or suggest too much code examples."},
+               {
+                "role": "user",
+                "content": "Please provide feedback on the following Java assignment.\n\n**Assignment Instructions:**\n${{ steps.instructions.outputs.instructions }}\n\n**Student's Source Code:**\n\`\`\`java\n${{ steps.source_code.outputs.source_code }}\n\`\`\`\n\n**Student's Test Code:**\n\`\`\`java\n${{ steps.test_code.outputs.test_code }}\n\`\`\`"
+              }
+            ]
+          }
+          EOF
+          
           API_RESPONSE=$(curl https://openrouter.ai/api/v1/chat/completions \
             -H "Authorization: Bearer ${{ secrets.OPENROUTER_API_KEY }}" \
             -H "Content-Type: application/json" \
-            -d '{
-              "model": "${{ secrets.OPENROUTER_MODEL }}",
-              "messages": [
-                {"role": "system", "content": "You are an expert Java programming instructor providing feedback on a student''s assignment. Your feedback should be constructive, helpful, and encouraging. Analyze the code for correctness, style, and adherence to the instructions. If there are tests, evaluate them as well. Structure your feedback in Markdown format. Don't ask if the student want help or suggest too much code examples."},
-                {"role": "user", "content": "Please provide feedback on the following Java assignment.\n\n**Assignment Instructions:**\n${{ steps.instructions.outputs.instructions }}\n\n**Student''s Source Code:**\n```java\n${{ steps.source_code.outputs.source_code }}\n```\n\n**Student''s Test Code:**\n```java\n${{ steps.test_code.outputs.test_code }}\n```"}
-              ]
-            }')
+            -d "$PAYLOAD")
 
           # Extracts the content from the JSON response.
           FEEDBACK_CONTENT=$(echo $API_RESPONSE | jq -r '.choices[0].message.content')
