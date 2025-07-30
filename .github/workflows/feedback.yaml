@@ -96,11 +96,11 @@ jobs:
           echo "$SOURCE_CODE"
           echo "$TEST_CODE"
 
-#          #1. Prepare the user prompt content in a shell variable
+          #1. Prepare the user prompt content in a shell variable
           read -r -d '' USER_CONTENT <<EOF
           Please provide feedback on the following Java assignment.
                
-          **Assignment Instructions:**
+          \*\*Assignment Instructions:\*\*
           EOF
 #          $INSTRUCTIONS
 #          **Student's Source Code:**
