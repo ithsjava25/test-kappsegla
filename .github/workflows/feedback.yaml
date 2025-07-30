@@ -74,37 +74,46 @@ jobs:
           SOURCE_CODE=$(printf %s "${{ steps.source_code.outputs.source_code }}" | jq -R -s .)
           TEST_CODE=$(printf %s "${{ steps.test_code.outputs.test_code }}" | jq -R -s .)
           
-          # Construct payload
-          PAYLOAD=$(jq -n \
-          --arg model "${{ secrets.OPENROUTER_MODEL }}" \
-          --arg instructions "$INSTRUCTIONS" \
-          --arg source_code "$SOURCE_CODE" \
-          --arg test_code "$TEST_CODE" \
-          '{
-            model: $model,
-            messages: [
-              {
-                role: "system",
-                content: "You are an expert Java programming instructor providing feedback on a student's assignment. Your feedback should be constructive, helpful, and encouraging. Analyze the code for correctness, style, and adherence to the instructions. If there are tests, evaluate them as well. Structure your feedback in Markdown format. Don'\''t ask if the student want help or suggest too much code examples."
-              },
-              {
-                role: "user",
-                content: (
-                           "Please provide feedback on the following Java assignment.\n\n" +
-                           "**Assignment Instructions:**\n" +
-                           ($instructions | fromjson) +
-                           "\n\n**Student's Source Code:**\n```java\n" +
-                           ($source_code | fromjson) +
-                           "\n```\n\n**Student's Test Code:**\n```java\n" +
-                           ($test_code | fromjson) +
-                           "\n```"
-                           )
-              }
-            ]
-          }')
+          # 1. Prepare the user prompt content in a shell variable
+          # Using a here-doc (<<EOF) is the most robust way to handle multiline strings.
+          read -r -d '' USER_CONTENT <<EOF
+          Please provide feedback on the following Java assignment.
 
-          # Show the final payload
-          echo "$PAYLOAD" | jq .
+          **Assignment Instructions:**
+          $INSTRUCTIONS
+
+          **Student's Source Code:**
+          \`\`\`java
+          $SOURCE_CODE
+          \`\`\`
+
+          **Student's Test Code:**
+          \`\`\`java
+          $TEST_CODE
+          \`\`\`
+          EOF
+          
+          # 2. Construct the final JSON payload using jq
+          # Now the jq command is much cleaner and just assembles the parts.
+          PAYLOAD=$(jq -n \
+            --arg model "${{ secrets.OPENROUTER_MODEL }}" \
+            --arg user_content "$USER_CONTENT" \
+            '{
+              "model": $model,
+              "messages": [
+                {
+                  "role": "system",
+                  "content": "You are an expert Java programming instructor providing feedback on a student'\''s assignment. Your feedback should be constructive, helpful, and encouraging. Analyze the code for correctness, style, and adherence to the instructions. If there are tests, evaluate them as well. Structure your feedback in Markdown format. Don'\''t ask if the student want help or suggest too much code examples."
+                },
+                {
+                  "role": "user",
+                  "content": $user_content
+                }
+              ]
+            }')
+
+          # For debugging: echo the payload to see what will be sent
+          echo "$PAYLOAD"
           
           # Send request to OpenRouter API
           API_RESPONSE=$(echo "$PAYLOAD" | curl -S https://openrouter.ai/api/v1/chat/completions \
