@@ -85,7 +85,7 @@ jobs:
           EOF
           )
           #set -e  # Exit immediately if a command exits with a non-zero status
-          set -x  # Print commands before executing them
+          #set -x  # Print commands before executing them
           
           if [ -z "$INSTRUCTIONS" ] || [ -z "$SOURCE_CODE" ] || [ -z "$TEST_CODE" ]; then
             echo "Error: One or more required variables are not set."
@@ -93,7 +93,7 @@ jobs:
           fi
 
           # Assigning to USER_CONTENT with variable expansion
-          USER_CONTENT="Please provide feedback on the following Java assignment.
+          PAYLOAD="Please provide feedback on the following Java assignment.
                
           **Assignment Instructions:**
           $INSTRUCTIONS
@@ -108,7 +108,15 @@ jobs:
           $TEST_CODE
           \`\`\`"
           
-          echo "$USER_CONTENT"
+          API_RESPONSE=$(echo "$PAYLOAD" | curl https://openrouter.ai/api/v1/chat/completions \
+          -H "Authorization: Bearer ${{ secrets.OPENROUTER_API_KEY }}" \
+          -H "Content-Type: application/json" \
+          -d @-)
+
+          FEEDBACK_CONTENT=$(echo "$API_RESPONSE" | jq -r '.choices[0].message.content')
+          echo "feedback<<EOF" >> $GITHUB_OUTPUT
+          echo "$FEEDBACK_CONTENT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Post Feedback as PR Comment ✍️
         uses: actions/github-script@v7
