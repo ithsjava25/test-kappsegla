@@ -109,7 +109,7 @@ jobs:
           \`\`\`"
           
           JSON_CONTENT="{
-            "model": "$OPENROUTER_MODEL",
+            "model": "${{env.OPENROUTER_MODEL}}",
             "messages": [
               {
                 "role": "system",
@@ -117,7 +117,7 @@ jobs:
               },
               {
                 "role": "user",
-                "content": "$PAYLOAD"
+                "content": "${{env.PAYLOAD}}"
               }
             ]
           }"
