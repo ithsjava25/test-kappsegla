@@ -76,7 +76,7 @@ jobs:
           
           # 1. Prepare the user prompt content in a shell variable
           # Using a here-doc (<<EOF) is the most robust way to handle multiline strings.
-          read -r -d '' USER_CONTENT <<EOF
+          read -r -d '' USER_CONTENT <<'EOF'
           Please provide feedback on the following Java assignment.
 
           **Assignment Instructions:**
