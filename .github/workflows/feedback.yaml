@@ -91,10 +91,6 @@ jobs:
             echo "Error: One or more required variables are not set."
           exit 1
           fi
-          
-          echo "$INSTRUCTIONS"
-          echo "$SOURCE_CODE"
-          echo "$TEST_CODE"
 
           #1. Prepare the user prompt content in a shell variable
           read -r -d '' USER_CONTENT <<EOF
