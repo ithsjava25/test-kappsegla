@@ -105,9 +105,7 @@ jobs:
           \`\`\`java
           ${TEST_CODE}
           \`\`\`"
-          
-          echo "$PAYLOAD"
-          
+                    
           JSON_CONTENT="{
             "model": "${OPENROUTER_MODEL}",
             "messages": [
@@ -121,6 +119,8 @@ jobs:
               }
             ]
           }"
+          
+          echo "$JSON_CONTENT"
           
           API_RESPONSE=$(echo "$JSON_CONTENT" | curl https://openrouter.ai/api/v1/chat/completions \
           -H "Authorization: Bearer ${{ secrets.OPENROUTER_API_KEY }}" \
