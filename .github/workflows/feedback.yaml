@@ -92,23 +92,23 @@ jobs:
           exit 1
           fi
 
-          #1. Prepare the user prompt content in a shell variable
-          read -r -d '' USER_CONTENT <<EOF
-          Please provide feedback on the following Java assignment.
+          # Assigning to USER_CONTENT with variable expansion
+          USER_CONTENT="Please provide feedback on the following Java assignment.
                
-          \*\*Assignment Instructions:\*\*
-          EOF
-#          $INSTRUCTIONS
-#          **Student's Source Code:**
-#          \`\`\`java
-#          $SOURCE_CODE
-#          \`\`\`
-#
-#          **Student's Test Code:**
-#          \`\`\`java
-#          $TEST_CODE
-#          \`\`\`
-#          EOF
+          **Assignment Instructions:**
+          $INSTRUCTIONS
+          
+          **Student's Source Code:**
+          \`\`\`java
+          $SOURCE_CODE
+          \`\`\`
+
+          **Student's Test Code:**
+          \`\`\`java
+          $TEST_CODE
+          \`\`\`"
+          
+          echo "$USER_CONTENT"
 
       - name: Post Feedback as PR Comment ✍️
         uses: actions/github-script@v7
