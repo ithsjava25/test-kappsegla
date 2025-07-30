@@ -97,9 +97,9 @@ jobs:
           ${INSTRUCTIONS}
           
           **Student's Source Code:**
-          ```java
+          \`\`\`java
           ${SOURCE_CODE}
-          ```
+          \`\`\`
 
           **Student's Test Code:**
           \`\`\`java
