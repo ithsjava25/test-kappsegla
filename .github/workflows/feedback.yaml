@@ -86,10 +86,10 @@ jobs:
           EOF
           )
           
-          API_RESPONSE=$(echo "$PAYLOAD" | curl -w https://openrouter.ai/api/v1/chat/completions \
+          API_RESPONSE=$(echo "$PAYLOAD" | curl -S https://openrouter.ai/api/v1/chat/completions \
           -H "Authorization: Bearer ${{ secrets.OPENROUTER_API_KEY }}" \
           -H "Content-Type: application/json" \
-          -d @-)
+          -d @- 2> >(tee /dev/stderr))
           
           FEEDBACK_CONTENT=$(echo "$API_RESPONSE" | jq -r '.choices[0].message.content')
           echo "feedback<<EOF" >> $GITHUB_OUTPUT
