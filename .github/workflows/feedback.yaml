@@ -96,20 +96,20 @@ jobs:
           PAYLOAD="Please provide feedback on the following Java assignment.
                
           **Assignment Instructions:**
-          ${{env.INSTRUCTIONS}}
+          ${INSTRUCTIONS}
           
           **Student's Source Code:**
-          \`\`\`java
-          ${{env.SOURCE_CODE}}
-          \`\`\`
+          ```java
+          ${SOURCE_CODE}
+          ```
 
           **Student's Test Code:**
           \`\`\`java
-          ${{env.TEST_CODE}}
+          ${TEST_CODE}
           \`\`\`"
           
           JSON_CONTENT="{
-            "model": "${{env.OPENROUTER_MODEL}}",
+            "model": "${OPENROUTER_MODEL}",
             "messages": [
               {
                 "role": "system",
@@ -117,7 +117,7 @@ jobs:
               },
               {
                 "role": "user",
-                "content": "${{env.PAYLOAD}}"
+                "content": "${PAYLOAD}"
               }
             ]
           }"
