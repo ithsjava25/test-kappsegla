@@ -97,22 +97,22 @@ jobs:
           
           # 2. Construct the final JSON payload using jq
           # Now the jq command is much cleaner and just assembles the parts.
-          PAYLOAD=$(jq -n \
-            --arg model "${{ secrets.OPENROUTER_MODEL }}" \
-            --arg user_content "$USER_CONTENT" \
-            '{
-              "model": $model,
-              "messages": [
-                {
-                  "role": "system",
-                  "content": "You are an expert Java programming instructor providing feedback on a student'\''s assignment. Your feedback should be constructive, helpful, and encouraging. Analyze the code for correctness, style, and adherence to the instructions. If there are tests, evaluate them as well. Structure your feedback in Markdown format. Don'\''t ask if the student want help or suggest too much code examples."
-                },
-                {
-                  "role": "user",
-                  "content": $user_content
-                }
-              ]
-            }')
+#          PAYLOAD=$(jq -n \
+#            --arg model "${{ secrets.OPENROUTER_MODEL }}" \
+#            --arg user_content "$USER_CONTENT" \
+#            '{
+#              "model": $model,
+#              "messages": [
+#                {
+#                  "role": "system",
+#                  "content": "You are an expert Java programming instructor providing feedback on a student'\''s assignment. Your feedback should be constructive, helpful, and encouraging. Analyze the code for correctness, style, and adherence to the instructions. If there are tests, evaluate them as well. Structure your feedback in Markdown format. Don'\''t ask if the student want help or suggest too much code examples."
+#                },
+#                {
+#                  "role": "user",
+#                  "content": $user_content
+#                }
+#              ]
+#            }')
 
           # For debugging: echo the payload to see what will be sent
           echo "$PAYLOAD"
