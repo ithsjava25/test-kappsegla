@@ -91,26 +91,30 @@ jobs:
             echo "Error: One or more required variables are not set."
           exit 1
           fi
+          
+          echo "$INSTRUCTIONS"
+          echo "$SOURCE_CODE"
+          echo "$TEST_CODE"
 
           #1. Prepare the user prompt content in a shell variable
           read -r -d '' USER_CONTENT <<EOF
           Please provide feedback on the following Java assignment.
 
           **Assignment Instructions:**
-          #$INSTRUCTIONS
+          $INSTRUCTIONS
           **Student's Source Code:**
           \`\`\`java
-          #$SOURCE_CODE
+          $SOURCE_CODE
           \`\`\`
 
           **Student's Test Code:**
           \`\`\`java
-          #$TEST_CODE
+          $TEST_CODE
           \`\`\`
           EOF
 
-          #echo "$USER_CONTENT"
-          
+          echo "$USER_CONTENT"
+
       - name: Post Feedback as PR Comment ✍️
         uses: actions/github-script@v7
         env:
