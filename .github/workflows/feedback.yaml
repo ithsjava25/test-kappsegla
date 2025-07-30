@@ -70,14 +70,20 @@ jobs:
           # You need to replace 'YOUR_MODEL' with the model you wish to use.
           # The prompt is structured to give the AI clear instructions on its role and task.     
           # Sanitize input variables using printf and encode safely with jq
-          echo "${{ steps.instructions.outputs.instructions }}" > instructions.txt
-          INSTRUCTIONS=$(jq -Rs . instructions.txt)
-          echo "${{ steps.source_code.outputs.source_code }}" > source_code.txt
-          SOURCE_CODE=$(jq -Rs . source_code.txt)        
-          echo "${{ steps.test_code.outputs.test_code }}" > test_code.txt
-          TEST_CODE=$(jq -Rs . test_code.txt)
-          
-          # 1. Prepare the user prompt content in a shell variable
+          INSTRUCTIONS=$(jq -Rs . <<'EOF'
+          ${{ steps.instructions.outputs.instructions }}
+          EOF
+          )
+          SOURCE_CODE=$(jq -Rs . <<'EOF'
+          ${{ steps.source_code.outputs.source_code }}
+          EOF
+          )
+          TEST_CODE=$(jq -Rs . <<'EOF'
+          ${{ steps.test_code.outputs.test_code }}
+          EOF
+          )
+  
+          #1. Prepare the user prompt content in a shell variable
           read -r -d '' USER_CONTENT <<'EOF'
           Please provide feedback on the following Java assignment.
 
