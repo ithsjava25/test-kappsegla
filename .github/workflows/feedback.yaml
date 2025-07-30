@@ -84,6 +84,9 @@ jobs:
           ${{ steps.test_code.outputs.test_code }}
           EOF
           )
+          #set -e  # Exit immediately if a command exits with a non-zero status
+          set -x  # Print commands before executing them
+          
           if [ -z "$INSTRUCTIONS" ] || [ -z "$SOURCE_CODE" ] || [ -z "$TEST_CODE" ]; then
             echo "Error: One or more required variables are not set."
           exit 1
