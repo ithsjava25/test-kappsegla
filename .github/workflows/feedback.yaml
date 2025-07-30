@@ -97,21 +97,21 @@ jobs:
           echo "$TEST_CODE"
 
           #1. Prepare the user prompt content in a shell variable
-          read -r -d '' USER_CONTENT <<EOF
-          Please provide feedback on the following Java assignment.
-
-          **Assignment Instructions:**
-          $INSTRUCTIONS
-          **Student's Source Code:**
-          \`\`\`java
-          $SOURCE_CODE
-          \`\`\`
-
-          **Student's Test Code:**
-          \`\`\`java
-          $TEST_CODE
-          \`\`\`
-          EOF
+#          read -r -d '' USER_CONTENT <<EOF
+#          Please provide feedback on the following Java assignment.
+#
+#          **Assignment Instructions:**
+#          $INSTRUCTIONS
+#          **Student's Source Code:**
+#          \`\`\`java
+#          $SOURCE_CODE
+#          \`\`\`
+#
+#          **Student's Test Code:**
+#          \`\`\`java
+#          $TEST_CODE
+#          \`\`\`
+#          EOF
 
           echo "$USER_CONTENT"
 
