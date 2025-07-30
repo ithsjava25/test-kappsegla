@@ -69,7 +69,7 @@ jobs:
           # This step sends the collected data to the OpenRouter API.
           # You need to replace 'YOUR_MODEL' with the model you wish to use.
           # The prompt is structured to give the AI clear instructions on its role and task.     
-          PAYLOAD=$(cat <<EOF
+          PAYLOAD=$(cat <<'EOF'
           {
             "model": "${{ secrets.OPENROUTER_MODEL }}",
             "messages": [
