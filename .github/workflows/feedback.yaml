@@ -76,53 +76,53 @@ jobs:
           ${{ steps.instructions.outputs.instructions }}
           EOF
           )
-          SOURCE_CODE=$(jq -Rs . <<'EOF'
-          ${{ steps.source_code.outputs.source_code }}
-          EOF
-          )
-          TEST_CODE=$(jq -Rs . <<'EOF'
-          ${{ steps.test_code.outputs.test_code }}
-          EOF
-          )
-  
-          #1. Prepare the user prompt content in a shell variable
-          read -r -d '' USER_CONTENT <<'EOF'
-          Please provide feedback on the following Java assignment.
-
-          **Assignment Instructions:**
-          $INSTRUCTIONS
-
-          **Student's Source Code:**
-          \`\`\`java
-          $SOURCE_CODE
-          \`\`\`
-
-          **Student's Test Code:**
-          \`\`\`java
-          $TEST_CODE
-          \`\`\`
-          EOF
-          
-          #echo "$USER_CONTENT"
-          
-          cat <<EOF > prompt.json
-          {
-            "model": "$model",
-            "messages": [
-              {
-                "role": "system",
-                "content": "You are an expert Java programming instructor providing feedback on a student's assignment. Your feedback should be constructive, helpful, and encouraging. Analyze the code for correctness, style, and adherence to the instructions. If there are tests, evaluate them as well. Structure your feedback in Markdown format. Don't ask if the student want help or suggest too much code examples."
-              },
-              {
-                "role": "user",
-                "content": "$user_content"
-              }
-            ]
-          }
-          EOF
-
-          cat prompt.json
+#          SOURCE_CODE=$(jq -Rs . <<'EOF'
+#          ${{ steps.source_code.outputs.source_code }}
+#          EOF
+#          )
+#          TEST_CODE=$(jq -Rs . <<'EOF'
+#          ${{ steps.test_code.outputs.test_code }}
+#          EOF
+#          )
 #
+#          #1. Prepare the user prompt content in a shell variable
+#          read -r -d '' USER_CONTENT <<'EOF'
+#          Please provide feedback on the following Java assignment.
+#
+#          **Assignment Instructions:**
+#          $INSTRUCTIONS
+#
+#          **Student's Source Code:**
+#          \`\`\`java
+#          $SOURCE_CODE
+#          \`\`\`
+#
+#          **Student's Test Code:**
+#          \`\`\`java
+#          $TEST_CODE
+#          \`\`\`
+#          EOF
+#
+#          #echo "$USER_CONTENT"
+#
+#          cat <<EOF > prompt.json
+#          {
+#            "model": "$model",
+#            "messages": [
+#              {
+#                "role": "system",
+#                "content": "You are an expert Java programming instructor providing feedback on a student's assignment. Your feedback should be constructive, helpful, and encouraging. Analyze the code for correctness, style, and adherence to the instructions. If there are tests, evaluate them as well. Structure your feedback in Markdown format. Don't ask if the student want help or suggest too much code examples."
+#              },
+#              {
+#                "role": "user",
+#                "content": "$user_content"
+#              }
+#            ]
+#          }
+#          EOF
+#
+#          cat prompt.json
+##
 #          # Send request to OpenRouter API
 #          API_RESPONSE=$(echo "$PAYLOAD" | curl -S https://openrouter.ai/api/v1/chat/completions \
 #            -H "Authorization: Bearer ${{ secrets.OPENROUTER_API_KEY }}" \
