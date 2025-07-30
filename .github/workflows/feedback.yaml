@@ -108,6 +108,8 @@ jobs:
           $TEST_CODE
           \`\`\`"
           
+          echo "$PAYLOAD"
+          
           API_RESPONSE=$(echo "$PAYLOAD" | curl https://openrouter.ai/api/v1/chat/completions \
           -H "Authorization: Bearer ${{ secrets.OPENROUTER_API_KEY }}" \
           -H "Content-Type: application/json" \
