@@ -86,10 +86,18 @@ jobs:
           EOF
           )
           
-          API_RESPONSE=$(echo "$PAYLOAD" | curl https://openrouter.ai/api/v1/chat/completions \
+#          API_RESPONSE=$(echo "$PAYLOAD" | curl -s -w https://openrouter.ai/api/v1/chat/completions \
+#          -H "Authorization: Bearer ${{ secrets.OPENROUTER_API_KEY }}" \
+#          -H "Content-Type: application/json" \
+#          -d @-)
+          API_RESPONSE=$(echo "$PAYLOAD" | curl -s -w "%{http_code}" -o response.json https://openrouter.ai/api/v1/chat/completions \
           -H "Authorization: Bearer ${{ secrets.OPENROUTER_API_KEY }}" \
           -H "Content-Type: application/json" \
           -d @-)
+
+          RESPONSE_CODE=${API_RESPONSE: -3}
+          cat response.json # Optional: view full response
+          echo "Response Code: $RESPONSE_CODE"
           
           FEEDBACK_CONTENT=$(echo "$API_RESPONSE" | jq -r '.choices[0].message.content')
           echo "feedback<<EOF" >> $GITHUB_OUTPUT
