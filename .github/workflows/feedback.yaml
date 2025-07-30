@@ -91,6 +91,8 @@ jobs:
           -H "Content-Type: application/json" \
           -d @- 2> >(tee /dev/stderr))
           
+          echo "$API_RESPONSE"
+          
           FEEDBACK_CONTENT=$(echo "$API_RESPONSE" | jq -r '.choices[0].message.content')
           echo "feedback<<EOF" >> $GITHUB_OUTPUT
           echo "$FEEDBACK_CONTENT" >> $GITHUB_OUTPUT
