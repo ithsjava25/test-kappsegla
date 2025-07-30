@@ -63,7 +63,6 @@ jobs:
             fi
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
-
       - name: Generate AI Feedback
         id: ai_feedback
         run: |
