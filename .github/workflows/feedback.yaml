@@ -96,16 +96,16 @@ jobs:
           PAYLOAD="Please provide feedback on the following Java assignment.
                
           **Assignment Instructions:**
-          $INSTRUCTIONS
+          ${{env.INSTRUCTIONS}}
           
           **Student's Source Code:**
           \`\`\`java
-          $SOURCE_CODE
+          ${{env.SOURCE_CODE}}
           \`\`\`
 
           **Student's Test Code:**
           \`\`\`java
-          $TEST_CODE
+          ${{env.TEST_CODE}}
           \`\`\`"
           
           JSON_CONTENT="{
