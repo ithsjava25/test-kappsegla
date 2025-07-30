@@ -84,6 +84,10 @@ jobs:
           ${{ steps.test_code.outputs.test_code }}
           EOF
           )
+          if [ -z "$INSTRUCTIONS" ] || [ -z "$SOURCE_CODE" ] || [ -z "$TEST_CODE" ]; then
+            echo "Error: One or more required variables are not set."
+          exit 1
+          fi
 
           #1. Prepare the user prompt content in a shell variable
           read -r -d '' USER_CONTENT <<EOF
