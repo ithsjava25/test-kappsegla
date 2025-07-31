@@ -111,20 +111,6 @@ jobs:
             {role: "user", content: $payload}
           ]
           }')
-                    
-#          JSON_CONTENT="{
-#            \"model\": \"${OPENROUTER_MODEL}\",
-#            \"messages\": [
-#              {
-#                \"role\": \"system\",
-#                \"content\": \"${SYSTEM_PROMPT}\"
-#              },
-#              {
-#                \"role\": \"user\",
-#                \"content\": \"${PAYLOAD}\"
-#              }
-#            ]
-#          }"
           
           echo "$JSON_CONTENT"
           
