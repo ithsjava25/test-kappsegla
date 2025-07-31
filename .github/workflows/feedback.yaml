@@ -25,6 +25,7 @@ jobs:
       pull-requests: write
     env:
       OPENROUTER_MODEL: ${{ secrets.OPENROUTER_MODEL }}
+      SYSTEM_PROMPT: ${{ vars.SYSTEM_PROMPT }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -69,9 +70,6 @@ jobs:
         id: ai_feedback
         run: |
           # This step sends the collected data to the OpenRouter API.
-          # You need to replace 'YOUR_MODEL' with the model you wish to use.
-          # The prompt is structured to give the AI clear instructions on its role and task.     
-          # Sanitize input variables using printf and encode safely with jq
           INSTRUCTIONS=$(jq -Rs . <<'EOF'
           ${{ steps.instructions.outputs.instructions }}
           EOF
@@ -107,7 +105,7 @@ jobs:
             \"messages\": [
               {
                 \"role\": \"system\",
-                \"content\": \"You are an expert Java programming instructor providing feedback on a student''s assignment. Your feedback should be constructive, helpful, and encouraging. Analyze the code for correctness, style, and adherence to the instructions. If there are tests, evaluate them as well. Structure your feedback in Markdown format. Don't ask if the student want help or suggest too much code examples.\"
+                \"content\": \"${SYSTEM_PROMPT}\"
               },
               {
                 \"role\": \"user\",
