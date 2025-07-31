@@ -94,12 +94,9 @@ jobs:
           --- Assignment Instructions ---
           ${INSTRUCTIONS}
           
-          --- Source Files ---
           ${SOURCE_CODE}
 
-          --- Test Code ---
-          ${TEST_CODE}
-          "
+          ${TEST_CODE}"
                     
           JSON_CONTENT="{
             \"model\": \"${OPENROUTER_MODEL}\",
