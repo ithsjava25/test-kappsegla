@@ -90,27 +90,41 @@ jobs:
 
           # Assigning to USER_CONTENT with variable expansion
           PAYLOAD="Please provide feedback on the following Java assignment.
-               
+          
           --- Assignment Instructions ---
           ${INSTRUCTIONS}
           
+          --- Source files ---          
           ${SOURCE_CODE}
-
+          
+          --- Test files ---
           ${TEST_CODE}"
+          
+          JSON_CONTENT=$(jq -n \
+          --arg model "$OPENROUTER_MODEL" \
+          --arg system_prompt "$SYSTEM_PROMPT" \
+          --arg payload "$PAYLOAD" \
+          '{
+          model: $model,
+          messages: [
+            {role: "system", content: $system_prompt},
+            {role: "user", content: $payload}
+          ]
+          }')
                     
-          JSON_CONTENT="{
-            \"model\": \"${OPENROUTER_MODEL}\",
-            \"messages\": [
-              {
-                \"role\": \"system\",
-                \"content\": \"${SYSTEM_PROMPT}\"
-              },
-              {
-                \"role\": \"user\",
-                \"content\": \"${PAYLOAD}\"
-              }
-            ]
-          }"
+#          JSON_CONTENT="{
+#            \"model\": \"${OPENROUTER_MODEL}\",
+#            \"messages\": [
+#              {
+#                \"role\": \"system\",
+#                \"content\": \"${SYSTEM_PROMPT}\"
+#              },
+#              {
+#                \"role\": \"user\",
+#                \"content\": \"${PAYLOAD}\"
+#              }
+#            ]
+#          }"
           
           echo "$JSON_CONTENT"
           
