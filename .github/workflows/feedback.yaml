@@ -43,7 +43,7 @@ jobs:
           {
             echo 'source_code<<EOF'
             find src/main/java -type f -name "*.java" | while read -r file; do
-              echo "// File: $file"
+              echo "=== File: $file ==="
               cat "$file"
               echo
             done
@@ -57,7 +57,7 @@ jobs:
             echo 'test_code<<EOF'
             if [ -d "src/test/java" ]; then
               find src/test/java -type f -name "*.java" | while read -r file; do
-                echo "// File: $file"
+                echo "=== File: $file ==="
                 cat "$file"
                 echo
               done
@@ -91,14 +91,15 @@ jobs:
           # Assigning to USER_CONTENT with variable expansion
           PAYLOAD="Please provide feedback on the following Java assignment.
                
-          **Assignment Instructions:**
+          --- Assignment Instructions ---
           ${INSTRUCTIONS}
           
-          **Student's Source Code:**
+          --- Source Files ---
           ${SOURCE_CODE}
 
-          **Student's Test Code:**
-          ${TEST_CODE}"
+          --- Test Code ---
+          ${TEST_CODE}
+          "
                     
           JSON_CONTENT="{
             \"model\": \"${OPENROUTER_MODEL}\",
