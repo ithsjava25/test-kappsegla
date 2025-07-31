@@ -1,13 +1,10 @@
-# 🚀 Create Your First Java Program
+# 🚀 Java Hello World
 
-Java has evolved to become more beginner-friendly. This guide walks you through creating a simple program that prints “Hello World,” using both the classic syntax and the new streamlined approach introduced in Java 21.
+This guide shows two ways to create a "Hello World" Java application.
 
----
+## 1. Classic Java (All Versions)
 
-## ✨ Classic Java Approach
-
-Traditionally, Java requires a class with a `main` method as the entry point:
-
+**Code:**
 ```java
 public class Main {
     public static void main(String[] args) {
@@ -16,39 +13,19 @@ public class Main {
 }
 ```
 
-This works across all Java versions and forms the foundation of most Java programs.
+## 2. Java 21+ (Unnamed Class)
 
----
-
-## 🆕 Java 21: Unnamed Class with Instance Main Method
-
-In newer versions like **Java 21**, you can use **Unnamed Classes** and an **Instance Main Method**, which allows for a much cleaner syntax:
-
+**Code:**
 ```java
 void main() {
     System.out.println("Hello World");
 }
 ```
-
-### 💡 Why is this cool?
-
-- ✅ No need for a `public class` declaration  
-- ✅ No `static` keyword required  
-- ✅ Great for quick scripts and learning  
-
-To compile and run this, use:
-
-```bash
+## 3. Run
+```shell
 javac --source 21 --enable-preview HelloWorld.java
 java --source 21 --enable-preview HelloWorld
 ```
-
----
-
-## 📚 Learn More
-
-This feature is part of Java’s ongoing effort to streamline syntax. You can explore deeper in [Baeldung’s guide to Unnamed Classes and Instance Main Methods](https://www.baeldung.com/java-21-unnamed-class-instance-main).
-
----
-
-Would you like help writing a version that includes user input or command-line arguments?
+Note for AI Bot:
+The application should print "Hello World" to the console.
+Either of the above code structures is acceptable.
